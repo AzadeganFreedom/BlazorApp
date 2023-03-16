@@ -3,15 +3,13 @@
 
 <PageTitle>Index</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>Welcome Back!</h1>
 
-Welcome to your new app.
+Here is your personal artist database!
 
 <button @onclick="ReadSql">Read From Sql</button>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
-
-@if (memeList == null)
+@if (artistList == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -20,25 +18,31 @@ else
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
+                <th></th>
                 <th>Name</th>
+                <th>Genre</th>
                 <th>URL</th>
+                <th>Delete</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var meme in memeList)
+            @foreach (var artist in artistList)
             {
                 <tr>
-                    <td>@meme.Id</td>
-                    <td>@meme.MemeName</td>
-                    <td>@meme.Url</td>
+                    <!--<td>@artist.Id</td>-->
+                    <td></td>
+                    <td>@artist.Name</td>
+                    <td>@artist.Genre</td>
+                    <td><a href="@artist.Url" target="-blank">@artist.Url</a></td>
+                    <td><button @onclick="() => DeleteFromSql(artist.Id)">Delete</button></td>
                 </tr>
             }
 
             <tr>
-                <td><button @onclick(AddToSql) >Add</button></td>
-                <td><input @bind = "meme.MemeName"/></td>
-                <td><input @bind = "meme.Url"/></td>
+                <td><button @onclick="AddToSql" >Add</button></td>
+                <td><input @bind = "artist.Name"/></td>
+                <td><input @bind = "artist.Genre"/></td>
+                <td><input @bind = "artist.Url"/></td>
 
             </tr>
         </tbody>
@@ -47,8 +51,17 @@ else
 
 @code {
     Sql sql = new();
-    Meme meme = new();
-    List<Meme> memeList = new();
-    void ReadSql() { memeList = sql.Read(); }
-    void AddToSql(){ sql.Create(meme); }
+    Artist artist = new();
+    List<Artist> artistList = Sql.Read();
+    void ReadSql() { artistList = Sql.Read(); }
+    void AddToSql()
+    { 
+        Sql.Create(artist); 
+        List<Artist> artistList = Sql.Read();
+    }
+    void DeleteFromSql(int id)
+    {
+        Sql.Delete(id);
+        artistList = Sql.Read();
+    }
 }

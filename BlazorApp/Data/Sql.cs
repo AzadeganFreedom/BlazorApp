@@ -4,21 +4,27 @@ namespace BlazorApp.Data
 {
     public class Sql
     {
-        string connectionString = "Data Source=192.168.2.3;Initial Catalog=MemeDB;User ID=sa;Password=Passw0rd;";
+        static string connectionString = "Data Source=.;Initial Catalog=ArtistDB;User ID=sa;Password=Passw0rd;";
 
 
-        public List<Meme> Read()
+        public static List<Artist> Read()
         {
-            List<Meme> list = new List<Meme>();
+            List<Artist> list = new List<Artist>();
             SqlConnection con = new(connectionString);
-            SqlCommand cmd = new SqlCommand("SELECT * FROM MemeTable", con);
+            SqlCommand cmd = new SqlCommand("SELECT * FROM ArtistTable order by name", con);
             con.Open();
             SqlDataReader dr = cmd.ExecuteReader();
 
             while (dr.Read())
             {
-                Meme meme = new Meme() { Id =dr.GetInt32(0), MemeName = dr.GetString(1), Url = dr.GetString(2) };
-                list.Add(meme);
+                Artist artist = new Artist() 
+                { 
+                    Id =dr.GetInt32(0), 
+                    Name = dr.GetString(1), 
+                    Genre = dr.GetString(2), 
+                    Url = dr.GetString(3) 
+                };
+                list.Add(artist);
 
             }
             con.Close();
@@ -26,13 +32,26 @@ namespace BlazorApp.Data
             return list;
         }
 
-        public void Create(Meme meme)
+        public static void Create(Artist artist)
         {
             using (SqlConnection conn = new(connectionString)) 
             {
-                var cmd = new SqlCommand("INSERT INTO MemeTABLE (MemeName, Url) VALUES(@memeName, @memeUrl)", conn);
-                cmd.Parameters.Add("@memeName", System.Data.SqlDbType.NVarChar).Value = meme.MemeName;
-                cmd.Parameters.Add("@memeName", System.Data.SqlDbType.NVarChar).Value = meme.Url;
+                var cmd = new SqlCommand("INSERT INTO ArtistTABLE (Name, Genre, Url) VALUES(@artistName, @artistGenre, @artistUrl)", conn);
+                cmd.Parameters.Add("@artistName", System.Data.SqlDbType.NVarChar).Value = artist.Name;
+                cmd.Parameters.Add("@artistGenre", System.Data.SqlDbType.NVarChar).Value = artist.Genre;
+                cmd.Parameters.Add("@artistUrl", System.Data.SqlDbType.NVarChar).Value = artist.Url;
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+        }
+
+        public static void Delete(int id)
+        {
+            using (SqlConnection conn = new(connectionString))
+            {
+                SqlCommand cmd = new("DELETE FROM ArtistTable WHERE Id = @id", conn);
+                cmd.Parameters.Add("@id", System.Data.SqlDbType.Int).Value = id;
                 conn.Open();
                 cmd.ExecuteNonQuery();
                 conn.Close();
