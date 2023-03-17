@@ -20,6 +20,7 @@ else
             <tr>
                 <th></th>
                 <th>Name</th>
+                <th>Country</th>
                 <th>Genre</th>
                 <th>URL</th>
                 <th>Delete</th>
@@ -31,9 +32,10 @@ else
                 <tr>
                     <!--<td>@artist.Id</td>-->
                     <td></td>
-                    <td>@artist.Name</td>
+                    <td style="font-weight: bold;">@artist.Name</td>
+                    <td><img src="@artist.Country" width="35px" height="20px"></td>
                     <td>@artist.Genre</td>
-                    <td><a href="@artist.Url" target="-blank">@artist.Url</a></td>
+                    <td><a href="@artist.Url" target="-blank">Link to Spotify</a></td>
                     <td><button @onclick="() => DeleteFromSql(artist.Id)">Delete</button></td>
                 </tr>
             }
@@ -41,6 +43,7 @@ else
             <tr>
                 <td><button @onclick="AddToSql" >Add</button></td>
                 <td><input @bind = "artist.Name"/></td>
+                <td><input @bind = "artist.Country"/></td>
                 <td><input @bind = "artist.Genre"/></td>
                 <td><input @bind = "artist.Url"/></td>
 

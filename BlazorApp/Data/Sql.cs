@@ -4,7 +4,7 @@ namespace BlazorApp.Data
 {
     public class Sql
     {
-        static string connectionString = "Data Source=.;Initial Catalog=ArtistDB;User ID=sa;Password=Passw0rd;";
+        static string connectionString = "Data Source=192.168.2.3;Initial Catalog=ArtistDB;User ID=sa;Password=Passw0rd;";
 
 
         public static List<Artist> Read()
@@ -21,8 +21,9 @@ namespace BlazorApp.Data
                 { 
                     Id =dr.GetInt32(0), 
                     Name = dr.GetString(1), 
-                    Genre = dr.GetString(2), 
-                    Url = dr.GetString(3) 
+                    Country = dr.GetString(2), 
+                    Genre = dr.GetString(3), 
+                    Url = dr.GetString(4) 
                 };
                 list.Add(artist);
 
@@ -36,8 +37,9 @@ namespace BlazorApp.Data
         {
             using (SqlConnection conn = new(connectionString)) 
             {
-                var cmd = new SqlCommand("INSERT INTO ArtistTABLE (Name, Genre, Url) VALUES(@artistName, @artistGenre, @artistUrl)", conn);
+                var cmd = new SqlCommand("INSERT INTO ArtistTABLE (Name, Country, Genre, Url) VALUES(@artistName, @artistCountry, @artistGenre, @artistUrl)", conn);
                 cmd.Parameters.Add("@artistName", System.Data.SqlDbType.NVarChar).Value = artist.Name;
+                cmd.Parameters.Add("@artistCountry", System.Data.SqlDbType.NVarChar).Value = artist.Country;
                 cmd.Parameters.Add("@artistGenre", System.Data.SqlDbType.NVarChar).Value = artist.Genre;
                 cmd.Parameters.Add("@artistUrl", System.Data.SqlDbType.NVarChar).Value = artist.Url;
                 conn.Open();
