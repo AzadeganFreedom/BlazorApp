@@ -4,7 +4,8 @@ namespace BlazorApp.Data
 {
     public class Sql
     {
-        static string connectionString = "Data Source=192.168.2.3;Initial Catalog=ArtistDB;User ID=sa;Password=Passw0rd;";
+        //When making a SQL table in ArtistDB, name it 
+        static string connectionString = "Data Source=.;Initial Catalog=ArtistDB;User ID=sa;Password=Passw0rd;";//The data source is originally: 192.168.2.3 (PC2)
 
 
         public static List<Artist> Read()

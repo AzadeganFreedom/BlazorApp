@@ -32,10 +32,10 @@ else
                 <tr>
                     <!--<td>@artist.Id</td>-->
                     <td></td>
-                    <td style="font-weight: bold;">@artist.Name</td>
-                    <td><img src="@artist.Country" width="35px" height="20px"></td>
-                    <td>@artist.Genre</td>
-                    <td><a href="@artist.Url" target="-blank">Link to Spotify</a></td>
+                    <td style="font-weight: bold;">@artist.Name</td><!--The name of the artist. Write artist name-->
+                    <td><img src="@artist.Country" width="35px" height="20px"></td><!--The country where the artist is from. Search for an image of a country flag online and copy paste its image URL-->
+                    <td>@artist.Genre</td><!--The genre/genres that the artist plays. Write the genre/genres-->
+                    <td><a href="@artist.Url" target="-blank">Link to Spotify</a></td><!--An URL for the artist music page. Spotify is prefered-->
                     <td><button @onclick="() => DeleteFromSql(artist.Id)">Delete</button></td>
                 </tr>
             }
